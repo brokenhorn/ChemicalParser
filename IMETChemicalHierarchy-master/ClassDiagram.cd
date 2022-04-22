@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ChemicalHierarchy.ChemicalElement">
+    <Position X="3.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAABAAAAAQEAAAAAAQAAAAAIAAAAAAAAAACAAA=</HashCode>
+      <FileName>ChemicalElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChemicalHierarchy.ChemicalCrystalSystem">
+    <Position X="9.5" Y="0.75" Width="2" />
+    <InheritanceLine Type="ChemicalHierarchy.ChemicalSubstance" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="1.625" />
+        <Point X="9.5" Y="1.625" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAgAAAAQEAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ChemicalCrystalSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChemicalHierarchy.ChemicalSubstance">
+    <Position X="6.75" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAEAAAAQEEAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ChemicalSubstance.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChemicalHierarchy.ChemicalSystem">
+    <Position X="4.25" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEEAAQAAAAAAAAAAAAggAAAAAAAAA=</HashCode>
+      <FileName>ChemicalSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChemicalHierarchy.ChemicalCrystalStructure">
+    <Position X="9.75" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEAAAAAAAACAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>CrystalStructureType.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChemicalHierarchy.Quantity" Collapsed="true">
+    <Position X="1.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAQEEAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Quantity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="ChemicalHierarchy.CrystalSystemType" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAABAAAAAEAAAAQAAAAgACAAAAABAAACAAA=</HashCode>
+      <FileName>CrystalSystemType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
