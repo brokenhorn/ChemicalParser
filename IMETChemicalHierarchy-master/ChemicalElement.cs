@@ -151,7 +151,7 @@ Ubb
 Ubt
 Ubq
 Ubp
-Ubn".Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+Ubn".Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             // Версия с файлом
             //if (!File.Exists(ElementsFileName))
@@ -186,7 +186,7 @@ Ubn".Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
         public ChemicalElement(string name)
         {
             int num = Array.IndexOf(_elements, name); // StringComparison.InvariantCulture
-            if (num < 1 || num > 255)
+            if (num < 0 || num > 255)
                 throw new ApplicationException("Не найден атомный номер по названию элемента: " + name);
             AtomicNumber = (byte)(num + 1);
             Name = name;

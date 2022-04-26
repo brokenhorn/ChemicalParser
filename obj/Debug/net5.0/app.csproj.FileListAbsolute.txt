@@ -1,0 +1,13 @@
+/Users/vmaricru/Desktop/ChemicalParser/app/obj/Debug/net5.0/app.csprojAssemblyReference.cache
+/Users/vmaricru/Desktop/ChemicalParser/app/obj/Debug/net5.0/app.GeneratedMSBuildEditorConfig.editorconfig
+/Users/vmaricru/Desktop/ChemicalParser/app/obj/Debug/net5.0/app.csproj.CoreCompileInputs.cache
+/Users/vmaricru/Desktop/ChemicalParser/app/bin/Debug/net5.0/app.deps.json
+/Users/vmaricru/Desktop/ChemicalParser/app/bin/Debug/net5.0/app.runtimeconfig.json
+/Users/vmaricru/Desktop/ChemicalParser/app/bin/Debug/net5.0/app.runtimeconfig.dev.json
+/Users/vmaricru/Desktop/ChemicalParser/app/bin/Debug/net5.0/app.dll
+/Users/vmaricru/Desktop/ChemicalParser/app/bin/Debug/net5.0/ref/app.dll
+/Users/vmaricru/Desktop/ChemicalParser/app/bin/Debug/net5.0/app.pdb
+/Users/vmaricru/Desktop/ChemicalParser/app/obj/Debug/net5.0/app.dll
+/Users/vmaricru/Desktop/ChemicalParser/app/obj/Debug/net5.0/ref/app.dll
+/Users/vmaricru/Desktop/ChemicalParser/app/obj/Debug/net5.0/app.pdb
+/Users/vmaricru/Desktop/ChemicalParser/app/obj/Debug/net5.0/app.genruntimeconfig.cache
