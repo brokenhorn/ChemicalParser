@@ -11,10 +11,11 @@ namespace diplom
     {
         static void Main(string[] args)
         {
-            string chemStr = "H<sub>2</sub>O";
+            // string chemStr = "H<sub>2-3.7</sub>O";
+             string chemStr = "H2O3Cl";
             Console.WriteLine(chemStr);
            Parse d = new  Parse(chemStr) ;
-           d.ParseStr();
+           //d.ParseStr();
         }
     }
 }
