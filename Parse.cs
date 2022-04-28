@@ -43,7 +43,7 @@ namespace ChemicalParser
         	}  
         }
 
-		private void ParseIndexBlockHtml(ref String InputStr, ref int i, ref String elemN)
+		private void ParseIndexBlockHtml(ref String InputStr, ref int i, ref String elemN, ref int blockIEnd, ref int blockIStart)
 		{
 			if ((InputStr.Remove(0, i)).Substring(0, 5) != "<sub>")
             {
@@ -73,11 +73,22 @@ namespace ChemicalParser
                 max = min;
 
             elemQQ tmp = ChemList.Last();
-            this.ChemList[blockI - 1] = new elemQQ {elemName = new ChemicalElement(elemN), min = tmp.min * min, max = tmp.max * max , blockNbr = blockI};
+            if (blockIEnd == 0)
+            	this.ChemList[blockI - 1] = new elemQQ {elemName = new ChemicalElement(elemN), min = tmp.min * min, max = tmp.max * max , blockNbr = blockI};
+			else
+			{
+				foreach (var block in ChemList)
+				{
+					if (block.blockNbr >= blockIStart & block.blockNbr <= blockIEnd)
+						this.ChemList[block.blockNbr - 1] = new elemQQ {elemName = new ChemicalElement(elemN), min = tmp.min * min, max = tmp.max * max , blockNbr = blockI};
+				}
+				blockIStart = 0; //Может не нужно
+				blockIEnd 	= 0;
+			}
             i += 6;
 		}
 
-        private void ParseIndexBlock(ref String InputStr, ref int i, ref String elemN)
+        private void ParseIndexBlock(ref String InputStr, ref int i, ref String elemN, ref int blockIEnd, ref int blockIStart)
         {
 			String str_min = "";
             String str_max = "";
@@ -95,9 +106,21 @@ namespace ChemicalParser
             if (max == -1)
                  max = min;
 			elemQQ tmp = ChemList.Last();
-            this.ChemList[blockI - 1] = new elemQQ {elemName = new ChemicalElement(elemN), min = tmp.min * min, max = tmp.max * max , blockNbr = blockI};
+			if (blockIEnd == 0)
+            	this.ChemList[blockI - 1] = new elemQQ {elemName = new ChemicalElement(elemN), min = tmp.min * min, max = tmp.max * max , blockNbr = blockI};
+			else
+			{
+				foreach (var block in ChemList)
+				{
+					if (block.blockNbr >= blockIStart & block.blockNbr <= blockIEnd)
+						this.ChemList[block.blockNbr - 1] = new elemQQ {elemName = new ChemicalElement(elemN), min = tmp.min * min, max = tmp.max * max , blockNbr = blockI};
+				}
+				blockIStart = 0; //Может не нужно
+				blockIEnd 	= 0;
+			}
+
         }
-		private void ParseChemElName(ref String InputStr, ref int i, ref String elemN) //блок формирования символа элемента
+		private void ParseChemElName(ref String InputStr, ref int i, ref String elemN, ref int blockIStart, ref int bracketFlagOpen) //блок формирования символа элемента
 		{
     		elemN = elemN + InputStr[i];
     		i++;
@@ -112,13 +135,15 @@ namespace ChemicalParser
     		    }
     		}    
     		blockI++;
+			if (blockIStart == 0 & bracketFlagOpen != 0)
+				blockIStart = blockI;
     		elemQQ el = new elemQQ {elemName = new ChemicalElement(elemN), min = 1, max = 1 , blockNbr = blockI}; //quantity = new ChemicalQuantity(1, 1)//
     		ChemList.Add(el);
 		}
 
 		private void ParseBracketBlock(ref String InputStr, ref int i, char BracketSym)
 		{
-			int 	j 					= i; // j заменить на i!!!
+			//int 	j 					= i; // j заменить на i!!!
 			char 	BracketSymClose;
 			int 	bracketFlagOpen 	= 0; // 1 = '(', 2 = '['
 			int 	bracketFlagClose 	= 0;
@@ -136,22 +161,22 @@ namespace ChemicalParser
 					bracketFlagOpen = 2;
 				}
 
-			while (InputStr[j] != BracketSym | InputStr[j] != BracketSymClose)
+			while (InputStr[i] != BracketSym | InputStr[i] != BracketSymClose)
 			{
 				string elemN = "";
 
-				j++;
+				i++;
 				if (allowedSym.Contains(InputStr[i]) == false) // проверка валидности символа
                    {
                     outMsg = "Обнаружен запрещенный символ";
                     return;
                    } 
 
-				if (InputStr[j] == '(' | InputStr[j] == '[')
-					ParseBracketBlock(ref InputStr, ref j, InputStr[j]);
+				if (InputStr[i] == '(' | InputStr[i] == '[')
+					ParseBracketBlock(ref InputStr, ref i, InputStr[i]);
 
 				if (InputStr[i] >= 60 & InputStr[i] <= 90) // блок проверки элемента
-					ParseChemElName(ref InputStr, ref i, ref elemN);
+					ParseChemElName(ref InputStr, ref i, ref elemN, ref blockIStart);
 
                 if (i >= InputStr.Length)
                     break;
@@ -162,6 +187,11 @@ namespace ChemicalParser
                 if (InputStr[i] >= '0' & InputStr[i] <= '9') //блок проверки индекса
 					ParseIndexBlock(ref InputStr, ref i, ref elemN);
 				
+				if (InputStr[i] == BracketSymClose)
+				{
+					blockIEnd = ChemList.Last().blockNbr;
+					i++;
+				}
 				
 			}
 		}
