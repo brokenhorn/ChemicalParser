@@ -12,7 +12,7 @@ namespace diplom
         static void Main(string[] args)
         {
             // string chemStr = "H<sub>2-3.7</sub>O";
-             string chemStr = "H2O3Cl";
+             string chemStr = "Ho2(Cl3(H3O2)4)2";
             Console.WriteLine(chemStr);
            Parse d = new  Parse(chemStr) ;
            //d.ParseStr();
