@@ -31,7 +31,7 @@ He
 Li
 Be
 B
-С
+C
 N
 O
 F
@@ -44,7 +44,7 @@ P
 S
 Cl
 Ar
-К
+K
 Ca
 Sc
 Ti
@@ -52,7 +52,7 @@ V
 Cr
 Mn
 Fe
-Со
+Co
 Ni
 Cu
 Zn
@@ -77,7 +77,7 @@ Cd
 In
 Sn
 Sb
-Те
+Te
 I
 Xe
 Cs
@@ -144,7 +144,7 @@ Uup
 Uuh
 Uus
 Uuo
-Uuе
+Uue
 Ubn
 Ubu
 Ubb
@@ -185,7 +185,9 @@ Ubn".Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
         /// <param name="name">имя элемента, например: "H", "He" и т.п.</param>
         public ChemicalElement(string name)
         {
+            String tmp = _elements[51];
             int num = Array.IndexOf(_elements, name); // StringComparison.InvariantCulture
+
             if (num < 0 || num > 255)
                 throw new ApplicationException("Не найден атомный номер по названию элемента: " + name);
             AtomicNumber = (byte)(num + 1);
