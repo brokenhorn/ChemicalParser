@@ -11,7 +11,7 @@ namespace ChemicalParserValidator
     class ChemicalParser
     {
 		[Serializable]
-		private class ChemicalDescription
+		private class ChemicalDescription //Описательный класс
 		{
 			private ChemicalSubstance SubstanceDescription{ get; set ;}
 			private ChemicalSystem SystemDescrition{ get; set ;}
@@ -27,7 +27,7 @@ namespace ChemicalParserValidator
 				SubstanceDescription = substance;
 			}
 		}
-        private class ElemQnQ //Качество и кол-во элемента
+        private class ElemQnQ //Блок для хранения качества и кол-ва элемента
        {
            public ChemicalElement elemName { get; set;}
            public double min{ get; set ;}
@@ -123,7 +123,7 @@ namespace ChemicalParserValidator
         	}  
         }
 
-		private void ParseIndexBlockHtml(ref int i, ref String elemN,  ref int blockIStart, ref int blockIEnd)
+		private void ParseIndexBlockHtml(ref int i, ref String elemN,  ref int blockIStart, ref int blockIEnd) // Блок обработки HTML индекса 
 		{
 			String str_min 	= "";
             String str_max 	= ""; 
@@ -177,7 +177,7 @@ namespace ChemicalParserValidator
             i += 6;
 		}
 
-        private void ParseIndexBlock(ref int i, ref String elemN,  ref int blockIStart, ref int blockIEnd)
+        private void ParseIndexBlock(ref int i, ref String elemN,  ref int blockIStart, ref int blockIEnd) //Блок обработки индекса
         {
 			String str_min 	= "";
             String str_max 	= "";
@@ -233,7 +233,7 @@ namespace ChemicalParserValidator
     		ChemList.Add(new ElemQnQ {elemName = new ChemicalElement(elemN), min = 1, max = 1 , blockNbr = blockI});
 		}
 
-		void SetSymClose(ref int i, ref char BracketSym, ref char BracketSymClose)
+		void SetSymClose(ref int i, ref char BracketSym, ref char BracketSymClose) // Блок Проверки нахождения в скобке, установка закрываюего символа скобки
 		{
 			if (BracketSym != ' ')
 			{
@@ -250,7 +250,7 @@ namespace ChemicalParserValidator
 			}	
 		}
 
-		void SetChemSystemFlag(ref int i)
+		void SetChemSystemFlag(ref int i) // Блок проверки наличия признака хим. системы в строке
 		{
 			if (InputStr[i] == '-')
 				{
@@ -259,7 +259,7 @@ namespace ChemicalParserValidator
 				}
 		}
 
-		private void ParseStr(ref int i, char BracketSym, int FlagOpen)
+		private void ParseStr(ref int i, char BracketSym, int FlagOpen) // Главный метод обработки строки (рекурсивный)
 		{
 			char 	BracketSymClose		= ' ';
 			int 	bracketFlagOpen 	= FlagOpen; // 1 = '(', 2 = '['
