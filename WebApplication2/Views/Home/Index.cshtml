@@ -1,0 +1,11 @@
+﻿@model WebApplication2.Models.FormulaProcess
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@using (Html.BeginForm())
+{
+    <p>Введите формулу": @Html.TextBoxFor(x => x.Str)</p>
+    <input type="submit" value="Обработать формулу" />
+    <p> @Model.Answer</p>
+}
