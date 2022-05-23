@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChemicalHierarchy;
 using System.Text.Json;
 
@@ -15,18 +13,20 @@ namespace ChemicalParserValidator
         {
             public ChemicalSubstance SubstanceDescription { get; set; }
             public ChemicalSystem SystemDescrition { get; set; }
+
             public ChemicalDescription(ChemicalSystem system)
             {
                 SystemDescrition = system;
-                SubstanceDescription = null;
+                //SubstanceDescription = null;
             }
 
-            public ChemicalDescription(ChemicalSystem system, ChemicalSubstance substance)
+            public ChemicalDescription(ChemicalSubstance substance)
             {
-                SystemDescrition = system;
+                //SystemDescrition = null;
                 SubstanceDescription = substance;
             }
         }
+
         private class ElemQnQ //Блок для хранения качества и кол-ва элемента
         {
             public ChemicalElement elemName { get; set; }
@@ -40,11 +40,12 @@ namespace ChemicalParserValidator
                 max = NewMax * max;
             }
         }
-        private String allowedSym = "1234567890-<>()[]-.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/";
-        private String exceptionSym = ".abcdefghijklmnopqrstuvwxyz/"; //возможно исключения также в нижнем регистре буквы, цифры(?),  
+
+        public  String outMsg { get; set; }
+		private String allowedSym = "1234567890-<>()[]-.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/";
+        private String exceptionSym = ".abcdefghijklmnopqrstuvwxyz/";
         private String InputStr;
         private List<ElemQnQ> ChemList; //список блоков элементов с их характеристикой
-        private String outMsg { get; set; }
         private int blockI;
         private int ChemSystemFlag; //0 - Substance; 1 - System
         private ChemicalSubstance Substance { get; set; }
@@ -66,8 +67,7 @@ namespace ChemicalParserValidator
         {
             if (ChemSystemFlag == 0)
                 return Substance;
-            else
-                throw new ApplicationException("Химическое вещество отсутствует");
+            throw new ApplicationException("Химическое вещество отсутствует");
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace ChemicalParserValidator
         }
 
         /// <summary>
-        /// Конструктор, получает строку, обрабатывает, создает объекты типа ChemicalSubstance и/только ChemicalSystem
+        /// Конструктор, получает строку, обрабатывает, создает объект типа ChemicalSubstance или ChemicalSystem
         /// </summary>
         public ChemicalParser(string chemStr) // конструктор
         {
@@ -88,23 +88,31 @@ namespace ChemicalParserValidator
             ChemSystemFlag = 0;
             outMsg = "0";
             ChemList = new List<ElemQnQ>();
+
+            if (chemStr == null | chemStr == "")
+            {
+	            outMsg = "Обнаружена пустая строка";
+				throw new ApplicationException(outMsg);
+            }
+
+
             InputStr = String.Concat(chemStr.Where(c => !Char.IsWhiteSpace(c))); // Удаление всех пробелов в строке
 
             ParseStr(ref i, ' ', 0);
 
-            ChemicalElement[] ElementArray = new ChemicalElement[blockI];
+            ChemicalElement[] ElementArray   = new ChemicalElement[blockI];
             ChemicalQuantity[] QuantityArray = new ChemicalQuantity[blockI];
             ChemicalDescription description;
             for (int j = 0; j < blockI; j++)
             {
-                ElementArray[j] = ChemList[j].elemName;
+                ElementArray[j]  = ChemList[j].elemName;
                 QuantityArray[j] = new ChemicalQuantity(ChemList[j].min, ChemList[j].max);
             }
             System = new ChemicalSystem(false, ElementArray);
             if (ChemSystemFlag == 0)
             {
-                Substance = new ChemicalSubstance(false, System, QuantityArray);
-                description = new ChemicalDescription(System, Substance);
+                Substance   = new ChemicalSubstance(false, System, QuantityArray);
+                description = new ChemicalDescription(Substance);
             }
             else
                 description = new ChemicalDescription(System);
@@ -318,7 +326,13 @@ namespace ChemicalParserValidator
                     blockIEnd = ChemList.Last().blockNbr;
                     i++;
 
-                    if (InputStr[i] == '<') //блок проверки индекса Html
+                    if (i >= InputStr.Length)
+                    {
+	                    bracketFlagClose = 1;
+						break;
+                    }
+
+					if (InputStr[i] == '<') //блок проверки индекса Html
                         ParseIndexBlockHtml(ref i, ref elemN, ref blockIStart, ref blockIEnd);
 
                     if (InputStr[i] >= '0' & InputStr[i] <= '9') //блок проверки индекса
@@ -344,7 +358,7 @@ namespace ChemicalParserValidator
                 outMsg = "1.Не найдена закрывающая скобка";
                 throw new ApplicationException(outMsg);
             }
-            return;
+            
         }
     }
 }
