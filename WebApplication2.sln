@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DBB39E5F-E5F5-4BED-B8BA-15C591D590EA}"
 	ProjectSection(SolutionItems) = preProject
 		ChemicalParser.cs = ChemicalParser.cs
+		reference.txt = reference.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChemicalParserValidator", "ChemicalParser\ChemicalParserValidator.csproj", "{9662FC5E-457D-4ADD-BA41-18C521F82BBF}"

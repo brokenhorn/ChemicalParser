@@ -131,61 +131,111 @@ namespace ChemicalParserValidator
             }
         }
 
-        private void ParseIndexBlockHtml(ref int i, ref String elemN, ref int blockIStart, ref int blockIEnd) // Блок обработки HTML индекса 
-        {
-            String str_min = "";
-            String str_max = "";
-            double min = -1;
-            double max = -1;
+		/* private void ParseIndexBlockHtml(ref int i, ref String elemN, ref int blockIStart, ref int blockIEnd) // Блок обработки HTML индекса 
+		 {
+			 String str_min = "";
+			 String str_max = "";
+			 double min = -1;
+			 double max = -1;
 
-            if ((InputStr.Remove(0, i)).Substring(0, 5) != "<sub>")
-            {
-                outMsg = "1.Обнаружен запрещенный блок символ";
-                throw new ApplicationException(outMsg);
-            }
-            i += 5;
+			 if ((InputStr.Remove(0, i)).Substring(0, 5) != "<sub>")
+			 {
+				 outMsg = "1.Обнаружен запрещенный блок символ";
+				 throw new ApplicationException(outMsg);
+			 }
+			 i += 5;
 
-            if (!(i >= InputStr.Length))
-                ParseMinMax(ref i, ref str_min);
+			 if (!(i >= InputStr.Length))
+				 ParseMinMax(ref i, ref str_min);
 
-            if (!(i >= InputStr.Length))
-            {
-                if (InputStr[i] == '-')
-                {
-                    i++;
-                    ParseMinMax(ref i, ref str_max);
-                }
-            }
+			 if (!(i >= InputStr.Length))
+			 {
+				 if (InputStr[i] == '-')
+				 {
+					 i++;
+					 ParseMinMax(ref i, ref str_max);
+				 }
+			 }
 
-            if ((InputStr.Remove(0, i)).Substring(0, 6) != "</sub>")
-            {
-                outMsg = "1.Обнаружен запрещенный блок символ";
-                throw new ApplicationException(outMsg);
-            }
+			 if ((InputStr.Remove(0, i)).Substring(0, 6) != "</sub>")
+			 {
+				 outMsg = "1.Обнаружен запрещенный блок символ";
+				 throw new ApplicationException(outMsg);
+			 }
 
-            min = Convert.ToDouble(str_min);
-            if (str_max != "")
-                max = Convert.ToDouble(str_max);
-            if (max == -1)
-                max = min;
+			 min = Convert.ToDouble(str_min);
+			 if (str_max != "")
+				 max = Convert.ToDouble(str_max);
+			 if (max == -1)
+				 max = min;
 
-            ElemQnQ tmp = ChemList.Last();
-            if (blockIEnd == 0)
-                ChemList[blockI - 1].SetMinMax(min, max);
-            else
-            {
-                foreach (var block in ChemList)
-                {
-                    if (block.blockNbr >= blockIStart & block.blockNbr <= blockIEnd)
-                        ChemList[block.blockNbr - 1].SetMinMax(min, max);
-                }
-                blockIStart = 0;
-                blockIEnd = 0;
-            }
-            i += 6;
-        }
+			 ElemQnQ tmp = ChemList.Last();
+			 if (blockIEnd == 0)
+				 ChemList[blockI - 1].SetMinMax(min, max);
+			 else
+			 {
+				 foreach (var block in ChemList)
+				 {
+					 if (block.blockNbr >= blockIStart & block.blockNbr <= blockIEnd)
+						 ChemList[block.blockNbr - 1].SetMinMax(min, max);
+				 }
+				 blockIStart = 0;
+				 blockIEnd = 0;
+			 }
+			 i += 6;
+		 }*/
 
-        private void ParseIndexBlock(ref int i, ref String elemN, ref int blockIStart, ref int blockIEnd) //Блок обработки индекса
+		private void ParseIndexBlockHtml(ref int i, ref String elemN, ref int blockIStart, ref int blockIEnd) // Блок обработки HTML индекса 
+		{
+			String str_min = "";
+			String str_max = "";
+			double min = -1;
+			double max = -1;
+
+
+			if ((InputStr.Remove(0, i)).Substring(0, 5) != "<sub>")
+			{
+				outMsg = "1.Обнаружен запрещенный блок символ";
+				throw new ApplicationException(outMsg);
+			}
+			i += 5;
+
+			ParseMinMax(ref i, ref str_min);
+
+			if (!(i >= InputStr.Length))
+			{
+				if (InputStr[i] == '-')
+				{
+					i++;
+					ParseMinMax(ref i, ref str_max);
+				}
+			}
+
+			if ((InputStr.Remove(0, i)).Substring(0, 6) != "</sub>")
+			{
+				outMsg = "1.Обнаружен запрещенный блок символ";
+				throw new ApplicationException(outMsg);
+			}
+			i += 6;
+
+			min = Convert.ToDouble(str_min);
+			if (str_max != "")
+				max = Convert.ToDouble(str_max);
+			if (max == -1)
+				max = min;
+			if (blockIEnd == 0)
+				ChemList[blockI - 1].SetMinMax(min, max);
+			else
+			{
+				for (int j = blockIStart; j <= blockIEnd; j++)
+					ChemList[j - 1].SetMinMax(min, max); // why j -1??
+
+				blockIStart = 0;
+				blockIEnd = 0;
+			}
+		}
+
+		private void ParseIndexBlock(ref int i, ref String elemN, ref int blockIStart, ref int blockIEnd) //Блок обработки индекса
         {
             String str_min = "";
             String str_max = "";
@@ -213,7 +263,7 @@ namespace ChemicalParserValidator
             else
             {
                 for (int j = blockIStart; j <= blockIEnd; j++)
-                    ChemList[j - 1].SetMinMax(min, max);
+                    ChemList[j - 1].SetMinMax(min, max); // why j -1??
 
                 blockIStart = 0;
                 blockIEnd = 0;
@@ -313,9 +363,12 @@ namespace ChemicalParserValidator
                     break;
 
                 if (InputStr[i] == '<') //блок проверки индекса Html
-                    ParseIndexBlockHtml(ref i, ref elemN, ref blockIEnd, ref blockIStart);
+                    ParseIndexBlockHtml(ref i, ref elemN, ref blockIStart, ref blockIEnd);
 
-                if (InputStr[i] >= '0' & InputStr[i] <= '9') //блок проверки индекса
+                if (i >= InputStr.Length)
+	                break;
+
+				if (InputStr[i] >= '0' & InputStr[i] <= '9') //блок проверки индекса
                     ParseIndexBlock(ref i, ref elemN, ref blockIStart, ref blockIEnd);
 
                 if (i >= InputStr.Length)
@@ -335,7 +388,11 @@ namespace ChemicalParserValidator
 					if (InputStr[i] == '<') //блок проверки индекса Html
                         ParseIndexBlockHtml(ref i, ref elemN, ref blockIStart, ref blockIEnd);
 
-                    if (InputStr[i] >= '0' & InputStr[i] <= '9') //блок проверки индекса
+
+					if (i >= InputStr.Length)
+						break;
+
+					if (InputStr[i] >= '0' & InputStr[i] <= '9') //блок проверки индекса
                         ParseIndexBlock(ref i, ref elemN, ref blockIStart, ref blockIEnd);
 
                     bracketFlagClose = 1;

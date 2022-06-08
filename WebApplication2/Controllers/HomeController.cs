@@ -9,7 +9,8 @@ namespace WebApplication2.Controllers
 
     public class HomeController : Controller
     {
-	    [HttpGet]
+	    [ValidateInput(false)]
+		[HttpGet]
         public ActionResult Index()
         {
             FormulaProcess process = new FormulaProcess("", "");
@@ -17,7 +18,8 @@ namespace WebApplication2.Controllers
             return View(process);
         }
 
-        [HttpPost]
+        [ValidateInput(false)]
+		[HttpPost]
         public ActionResult Index(FormulaProcess formula)
         {
 	        Thread parseThread = new Thread(formula.ProcessParseThread);

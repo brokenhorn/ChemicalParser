@@ -1,14 +1,14 @@
 ﻿@model WebApplication2.Models.FormulaProcess
-@{
-    ViewBag.Title = "Home Page";
 
-}
 
 @using (Html.BeginForm())
 {
-
-    <p>Введите формулу": @Html.TextBoxFor(x => x.Str)</p>
+    <link type="text/css" rel="stylesheet" href="../../Content/Site.css" />
+   
+    <p>Введите формулу: @Html.TextBoxFor(x => x.Str)</p>
+    
     <input type="submit" value="Обработать формулу" />
+    
     <form action="textarea1.php" method="get">
         <p><textarea rows="25" cols="60" name="text"> @Model.Answer </textarea></p>
     </form>
